@@ -31,8 +31,18 @@ class StaticDataServiceImpl : StaticDataService {
         return db
     }
 
-    override fun getData(key: String): List<Map<String, *>>? {
+    override fun getData(key: String, attributeFilter: Map<String, *>?): List<Map<String, *>>? {
         this.loadDatabase()
-        return db.getOrDefault(key,null);
+        val fullRes = db.getOrDefault(key,null) ?: return null
+        if(attributeFilter==null || attributeFilter.isEmpty()) return fullRes
+        return fullRes.filter { map -> this.filtersTrue(map,attributeFilter) }
+;    }
+
+    private fun filtersTrue(map: Map<String, *>, filter: Map<String, *>): Boolean {
+        for(f in filter){
+            val mapV = map[f.key]
+            if(mapV==null || mapV != f.value) return false
+        }
+        return true
     }
 }

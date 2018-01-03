@@ -27,6 +27,14 @@ class JSONControllerTest {
     }
 
     @Test
+    fun whenCalledWithFeatured_shouldGetOneData() {
+        val result = testRestTemplate.getForEntity("/staticjson/dishes?featured=true", List::class.java)
+        assertNotNull(result)
+        assertEquals(result.statusCode, HttpStatus.OK)
+        assertEquals(1,result.body.size)
+    }
+
+    @Test
     fun whenCalledWithNonExisting_shouldGetNoData() {
         val result = testRestTemplate.getForEntity("/staticjson/foo", List::class.java)
         assertNotNull(result)
