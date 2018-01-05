@@ -17,4 +17,14 @@ class JSONController(val svc: StaticDataService) {
     fun getDataItem(@PathVariable name: String, @PathVariable id: Int): Map<String, *>? {
         return svc.getDataItem(name, id)
     }
+
+    @PostMapping("/{name}/{id}")
+    fun createDataItem(@PathVariable name: String, @RequestBody newDataItem: Map<String, *>): Map<String, *>? {
+        return svc.createDataItem(name, newDataItem)
+    }
+
+    @PutMapping("/{name}/{id}")
+    fun updateDataItem(@PathVariable name: String, @PathVariable id: Int, @RequestBody newDataItem: Map<String, *>): Map<String, *>? {
+        return svc.updateDataItem(name, id, newDataItem)
+    }
 }

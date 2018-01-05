@@ -1,5 +1,6 @@
 package photos.brooklyn.learnkotlin.controller
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -9,6 +10,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringRunner
 import photos.brooklyn.LearnKotlinApplication
+
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = arrayOf(LearnKotlinApplication::class),
@@ -40,5 +42,29 @@ class JSONControllerTest {
         assertNotNull(result)
         assertEquals(result?.statusCode, HttpStatus.OK)
         assertNull(result.body)
+    }
+
+    @Test
+    fun whenAddNew_shouldGetNewBack() {
+        val result = testRestTemplate.postForEntity("/staticjson/dishes", hashMapOf("name" to "hello"), Map::class.java)
+        assertNotNull(result)
+        assertThat(result.body["id"] as Int).isGreaterThan(0)
+    }
+
+    @Test
+    fun whenUpdateWithNewComment_shouldHaveNewDBComment() {
+        // this should already be tested
+        val dish = testRestTemplate.getForEntity("/staticjson/dishes/1", MutableMap::class.java).body
+        val comments = dish["comments"] as MutableList<Map<String, *>>
+        val originalCommentSize = comments.size
+        comments.add(mapOf("rating" to 3, "author" to "me"))
+
+        // update
+        testRestTemplate.put("/staticjson/dishes/1", dish, Map::class.java)
+        // this should already be tested
+        val newDish = testRestTemplate.getForEntity("/staticjson/dishes/1", MutableMap::class.java).body
+        val newComments: List<*>? = newDish["comments"] as List<*>?
+        assertNotNull(newComments)
+        assertThat(newComments?.size).isEqualTo(1+originalCommentSize)
     }
 }

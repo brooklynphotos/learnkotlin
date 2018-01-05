@@ -19,4 +19,22 @@ interface StaticDataService {
      * @return data for that key filtered by the id
      */
     fun getDataItem(name: String, id: Int): Map<String, *>?
+
+    /**
+     * creates a new data item in the system
+     * @param name key
+     * @param newDataItem new info
+     * @return new info as seen in the db
+     */
+    fun createDataItem(name: String, newDataItem: Map<String, *>): Map<String, *>?
+
+    /**
+     * update a new data item in the system
+     * @param name key
+     * @param id id of the item you are updating
+     * @param newDataItem new info
+     * @return basically what you gave it
+     */
+    fun updateDataItem(name: String, id: Int, newDataItem: Map<String, *>): Map<String, *>
+
 }
