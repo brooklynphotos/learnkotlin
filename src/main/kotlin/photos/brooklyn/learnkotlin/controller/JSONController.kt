@@ -12,4 +12,9 @@ class JSONController(val svc: StaticDataService) {
     fun getData(@PathVariable name: String, request: HttpServletRequest): List<Map<String, *>>? {
         return svc.getData(name,request.parameterMap.map{entry -> entry.key to entry.value[0] }.toMap())
     }
+
+    @GetMapping("/{name}/{id}")
+    fun getDataItem(@PathVariable name: String, @PathVariable id: Int): Map<String, *>? {
+        return svc.getDataItem(name, id)
+    }
 }

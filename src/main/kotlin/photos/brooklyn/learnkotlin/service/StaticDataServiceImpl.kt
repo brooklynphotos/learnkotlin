@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 import java.io.IOException
-import java.util.*
+import kotlin.collections.*
 
 @Service
 class StaticDataServiceImpl : StaticDataService {
+    override fun getDataItem(key: String, id: Int): Map<String, *>? {
+        loadDatabase()
+        return this.getData(key, mapOf("id" to id))?.get(0)
+    }
+
     @Value("classpath:db.json")
     lateinit private var dbResource: Resource
 
