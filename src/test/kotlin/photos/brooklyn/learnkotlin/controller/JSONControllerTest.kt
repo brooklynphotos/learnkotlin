@@ -51,6 +51,14 @@ class JSONControllerTest {
         assertThat(result.body["id"] as Int).isGreaterThan(0)
     }
 
+
+    @Test
+    fun whenAddNewToEmpty_shouldGetNewBack() {
+        val result = testRestTemplate.postForEntity("/staticjson/feedback", hashMapOf("name" to "hello"), Map::class.java)
+        assertNotNull(result)
+        assertThat(result.body["id"] as Int).isEqualTo(1)
+    }
+
     @Test
     fun whenUpdateWithNewComment_shouldHaveNewDBComment() {
         // this should already be tested

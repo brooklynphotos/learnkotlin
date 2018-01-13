@@ -18,7 +18,7 @@ class JSONController(val svc: StaticDataService) {
         return svc.getDataItem(name, id)
     }
 
-    @PostMapping("/{name}/{id}")
+    @PostMapping("/{name}")
     fun createDataItem(@PathVariable name: String, @RequestBody newDataItem: Map<String, *>): Map<String, *>? {
         return svc.createDataItem(name, newDataItem)
     }

@@ -22,7 +22,7 @@ class StaticDataServiceImpl : StaticDataService {
     @Synchronized override fun createDataItem(name: String, newDataItem: Map<String, *>): Map<String, *>? {
         loadDatabase()
         val table = this.db[name] ?: throw IllegalArgumentException("No such key: "+name)
-        val largest = (table.maxBy { it["id"] as Int }?.get("id") as Int)
+        val largest = (table.maxBy { it["id"] as Int }?.get("id") as? Int)?:0
         val newDBItem = HashMap(newDataItem)
         newDBItem["id"] = largest + 1
         table.add(newDBItem)
